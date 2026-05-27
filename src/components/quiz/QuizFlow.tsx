@@ -48,31 +48,31 @@ export function QuizFlow({ beans }: Props) {
 
       {step === 'taste' && (
         <Question title="Какой вкус вы любите больше всего?" subtitle="Это поможет подобрать зерно под ваш профиль">
-          <Option emoji="🍋" onClick={() => update('taste', 'sour', 'milk')}>Кислый — фруктовый, цитрусовый, яркий</Option>
-          <Option emoji="🍫" onClick={() => update('taste', 'sweet', 'milk')}>Сладкий — карамель, шоколад, орехи</Option>
-          <Option emoji="☕" onClick={() => update('taste', 'balanced', 'milk')}>Сбалансированный — всё понемногу</Option>
-          <Option emoji="🔥" onClick={() => update('taste', 'bitter', 'milk')}>Горький — крепкий, плотный, тёмный</Option>
+          <Option onClick={() => update('taste', 'sour', 'milk')}>Кислый — фруктовый, цитрусовый, яркий</Option>
+          <Option onClick={() => update('taste', 'sweet', 'milk')}>Сладкий — карамель, шоколад, орехи</Option>
+          <Option onClick={() => update('taste', 'balanced', 'milk')}>Сбалансированный — всё понемногу</Option>
+          <Option onClick={() => update('taste', 'bitter', 'milk')}>Горький — крепкий, плотный, тёмный</Option>
         </Question>
       )}
 
       {step === 'milk' && (
         <Question title="Будете пить с молоком?" subtitle="От этого зависит рекомендуемая обжарка">
-          <Option emoji="🥛" onClick={() => update('withMilk', true, 'context')}>Да, обычно с молоком или альтернативой</Option>
-          <Option emoji="☕" onClick={() => update('withMilk', false, 'context')}>Нет, чёрный кофе — без ничего</Option>
+          <Option onClick={() => update('withMilk', true, 'context')}>Да, обычно с молоком или альтернативой</Option>
+          <Option onClick={() => update('withMilk', false, 'context')}>Нет, чёрный кофе — без ничего</Option>
         </Question>
       )}
 
       {step === 'context' && (
         <Question title="Где будете пить чаще?" subtitle="Для дома подберём зерно под вашу кофеварку">
-          <Option emoji="🏠" onClick={() => update('context', 'home', 'first')}>Дома — буду варить сам</Option>
-          <Option emoji="🏪" onClick={() => update('context', 'cafe', 'first')}>В кофейне — пью у вас</Option>
+          <Option onClick={() => update('context', 'home', 'first')}>Дома — буду варить сам</Option>
+          <Option onClick={() => update('context', 'cafe', 'first')}>В кофейне — пью у вас</Option>
         </Question>
       )}
 
       {step === 'first' && (
         <Question title="Первый опыт со спешелти?" subtitle="Мы учтём это при рекомендации">
-          <Option emoji="🌱" onClick={() => update('isFirstTime', true, 'result')}>Да, только начинаю разбираться</Option>
-          <Option emoji="🎯" onClick={() => update('isFirstTime', false, 'result')}>Нет, я уже в теме</Option>
+          <Option onClick={() => update('isFirstTime', true, 'result')}>Да, только начинаю разбираться</Option>
+          <Option onClick={() => update('isFirstTime', false, 'result')}>Нет, я уже в теме</Option>
         </Question>
       )}
     </div>
@@ -99,14 +99,13 @@ function Question({ title, subtitle, children }: { title: string; subtitle?: str
   );
 }
 
-function Option({ emoji, onClick, children }: { emoji: string; onClick: () => void; children: React.ReactNode }) {
+function Option({ onClick, children }: { onClick: () => void; children: React.ReactNode }) {
   return (
     <button
       onClick={onClick}
-      className="flex items-center gap-4 w-full text-left p-5 border border-copper/25 rounded-xl hover:border-copper hover:bg-copper/5 transition-all hover:translate-x-1"
+      className="block w-full text-left p-5 border border-copper/25 rounded-xl text-parchment/90 hover:border-copper hover:bg-copper/5 transition-all"
     >
-      <span className="text-2xl flex-shrink-0">{emoji}</span>
-      <span className="text-parchment/90">{children}</span>
+      {children}
     </button>
   );
 }
