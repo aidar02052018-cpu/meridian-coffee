@@ -26,7 +26,7 @@ export function FeaturedBeans({ beans }: Props) {
               href="/beans"
               className="mt-6 md:mt-0 font-mono text-xs tracking-[0.3em] text-copper hover:text-parchment transition-colors"
             >
-              ВСЕ 6 ЗЁРЕН →
+              ВЕСЬ КАТАЛОГ →
             </Link>
           </div>
         </Reveal>

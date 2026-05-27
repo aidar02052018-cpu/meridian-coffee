@@ -66,13 +66,7 @@ export default async function BeanPage({ params }: PageProps) {
           </>
         )}
         <div className="max-w-5xl mx-auto px-6 relative">
-          <Link
-            href="/beans"
-            className="font-mono text-xs tracking-[0.3em] text-copper/70 hover:text-copper transition-colors"
-          >
-            ← НАЗАД В КАТАЛОГ
-          </Link>
-          <div className="mt-8 flex flex-col md:flex-row md:items-end justify-between gap-6">
+          <div className="flex flex-col md:flex-row md:items-end justify-between gap-6">
             <div>
               <p className="font-mono text-xs tracking-[0.3em] text-copper/70 mb-3">
                 {bean.country.toUpperCase()} · {bean.region.toUpperCase()}
