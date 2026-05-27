@@ -1,8 +1,5 @@
 import Image from 'next/image';
 import { SubscriptionFlow } from '@/components/subscription/SubscriptionFlow';
-import { HowItWorks } from '@/components/home/HowItWorks';
-import { WhatsInTheBox } from '@/components/home/WhatsInTheBox';
-import { Testimonials } from '@/components/home/Testimonials';
 import { Reveal } from '@/components/ui/Reveal';
 
 export const metadata = {
@@ -49,10 +46,6 @@ export default function SubscriptionPage() {
         <SubscriptionFlow />
       </section>
 
-      {/* Reuse home sections */}
-      <HowItWorks />
-      <WhatsInTheBox />
-      <Testimonials />
     </>
   );
 }

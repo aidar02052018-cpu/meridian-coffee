@@ -9,7 +9,7 @@ const navItems = [
 
 export function Header() {
   return (
-    <header className="border-b border-copper/15">
+    <header className="sticky top-0 z-50 bg-night/90 backdrop-blur-md border-b border-copper/15">
       <div className="max-w-6xl mx-auto px-6 py-6 flex items-center justify-between">
         <Wordmark size="sm" />
         <nav className="flex gap-8">

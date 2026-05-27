@@ -6,18 +6,17 @@ import { Reveal } from '@/components/ui/Reveal';
 interface Origin {
   country: string;
   region: string;
-  // % coordinates inside the SVG viewBox (0-100)
   x: number;
   y: number;
 }
 
 const ORIGINS: Origin[] = [
-  { country: 'Эфиопия', region: 'Йиргачеффе', x: 60, y: 60 },
-  { country: 'Кения', region: 'Ньери', x: 61, y: 64 },
-  { country: 'Колумбия', region: 'Уила', x: 27, y: 60 },
-  { country: 'Бразилия', region: 'Минас-Жерайс', x: 33, y: 72 },
-  { country: 'Гватемала', region: 'Антигуа', x: 22, y: 56 },
-  { country: 'Коста-Рика', region: 'Тарразу', x: 23, y: 60 },
+  { country: 'Эфиопия', region: 'Йиргачеффе', x: 60, y: 52 },
+  { country: 'Кения', region: 'Ньери', x: 58, y: 57 },
+  { country: 'Колумбия', region: 'Уила', x: 27, y: 52 },
+  { country: 'Бразилия', region: 'Минас-Жерайс', x: 33, y: 68 },
+  { country: 'Гватемала', region: 'Антигуа', x: 22, y: 47 },
+  { country: 'Коста-Рика', region: 'Тарразу', x: 24, y: 52 },
 ];
 
 export function OriginMap() {
@@ -33,81 +32,81 @@ export function OriginMap() {
               Шесть точек на карте
             </h2>
             <p className="text-parchment/70 mt-4 max-w-xl mx-auto">
-              Каждая ферма работает с нами лично — без посредников. Мы знаем, кто собрал, кто обработал, кто отгрузил.
+              Каждая ферма работает с нами лично — без посредников. Мы знаем,
+              кто собрал, кто обработал, кто отгрузил.
             </p>
           </div>
         </Reveal>
 
         <Reveal delay={0.15}>
-          <div className="relative aspect-[2/1] max-w-4xl mx-auto rounded-2xl border border-copper/15 bg-night/50 overflow-hidden p-8">
-            {/* Latitude/longitude grid */}
+          <div className="relative max-w-4xl mx-auto rounded-2xl border border-copper/15 bg-night/60 overflow-hidden">
             <svg
-              viewBox="0 0 100 50"
-              className="absolute inset-0 w-full h-full"
-              preserveAspectRatio="none"
+              viewBox="0 0 1000 500"
+              className="w-full h-auto"
+              fill="none"
             >
-              {[10, 25, 40].map((y) => (
-                <line key={`h${y}`} x1="0" y1={y} x2="100" y2={y} stroke="#d4a06b" strokeWidth="0.05" strokeOpacity="0.2" strokeDasharray="0.5 0.5" />
-              ))}
-              {[20, 40, 60, 80].map((x) => (
-                <line key={`v${x}`} x1={x} y1="0" x2={x} y2="50" stroke="#d4a06b" strokeWidth="0.05" strokeOpacity="0.2" strokeDasharray="0.5 0.5" />
-              ))}
-              {/* Equator */}
-              <line x1="0" y1="25" x2="100" y2="25" stroke="#d4a06b" strokeWidth="0.1" strokeOpacity="0.4" />
-            </svg>
+              {/* Simplified continent outlines */}
+              <g stroke="#d4a06b" strokeWidth="0.8" strokeOpacity="0.2" fill="#d4a06b" fillOpacity="0.04">
+                <path d="M520 150 L560 140 L590 160 L610 200 L620 260 L610 310 L590 340 L560 360 L530 350 L510 320 L500 280 L490 240 L500 200 L510 170 Z" />
+                <path d="M230 280 L260 260 L290 250 L310 260 L330 290 L340 330 L350 370 L340 400 L310 420 L280 410 L250 380 L230 340 L220 310 Z" />
+                <path d="M190 210 L210 200 L240 210 L260 230 L250 250 L230 260 L210 250 L190 240 Z" />
+                <path d="M150 80 L200 60 L260 70 L300 90 L310 120 L300 160 L270 180 L230 190 L200 180 L170 160 L150 130 Z" />
+                <path d="M470 60 L520 50 L560 60 L580 80 L570 110 L540 130 L510 140 L480 130 L460 110 L450 80 Z" />
+                <path d="M580 60 L650 40 L720 50 L780 70 L820 100 L840 140 L830 180 L800 200 L750 210 L700 200 L660 180 L630 150 L610 120 L590 90 Z" />
+                <path d="M760 300 L810 290 L850 300 L870 330 L860 360 L830 370 L790 360 L770 340 Z" />
+              </g>
 
-            {/* Connecting lines between dots */}
-            <svg className="absolute inset-0 w-full h-full" preserveAspectRatio="none" viewBox="0 0 100 100">
+              {/* Coffee belt */}
+              <rect x="0" y="200" width="1000" height="150" fill="#d4a06b" fillOpacity="0.04" />
+              <line x1="0" y1="200" x2="1000" y2="200" stroke="#d4a06b" strokeWidth="0.5" strokeOpacity="0.15" strokeDasharray="8 4" />
+              <line x1="0" y1="350" x2="1000" y2="350" stroke="#d4a06b" strokeWidth="0.5" strokeOpacity="0.15" strokeDasharray="8 4" />
+              <text x="960" y="215" fill="#d4a06b" fillOpacity="0.25" fontSize="10" fontFamily="monospace" textAnchor="end">COFFEE BELT</text>
+
+              {/* Connecting lines */}
               {ORIGINS.map((o, i) =>
                 ORIGINS.slice(i + 1).map((other, j) => (
                   <motion.line
                     key={`${i}-${j}`}
                     initial={{ pathLength: 0, opacity: 0 }}
-                    whileInView={{ pathLength: 1, opacity: 0.15 }}
+                    whileInView={{ pathLength: 1, opacity: 0.2 }}
                     viewport={{ once: true }}
                     transition={{ duration: 1.5, delay: 0.3 + i * 0.05 }}
-                    x1={o.x}
-                    y1={o.y}
-                    x2={other.x}
-                    y2={other.y}
+                    x1={o.x * 10}
+                    y1={o.y * 5}
+                    x2={other.x * 10}
+                    y2={other.y * 5}
                     stroke="#d4a06b"
-                    strokeWidth="0.1"
+                    strokeWidth="0.8"
                   />
                 ))
               )}
+
+              {/* Origin dots and labels */}
+              {ORIGINS.map((o, i) => (
+                <motion.g
+                  key={o.country}
+                  initial={{ opacity: 0 }}
+                  whileInView={{ opacity: 1 }}
+                  viewport={{ once: true }}
+                  transition={{ duration: 0.5, delay: 0.5 + i * 0.12 }}
+                >
+                  <circle cx={o.x * 10} cy={o.y * 5} r="12" fill="#d4a06b" fillOpacity="0.15">
+                    <animate attributeName="r" values="8;16;8" dur="3s" repeatCount="indefinite" />
+                    <animate attributeName="fill-opacity" values="0.2;0.05;0.2" dur="3s" repeatCount="indefinite" />
+                  </circle>
+                  <circle cx={o.x * 10} cy={o.y * 5} r="5" fill="#d4a06b" />
+                  <text x={o.x * 10} y={o.y * 5 + 20} fill="#d4a06b" fontSize="11" fontFamily="monospace" letterSpacing="2" textAnchor="middle" fillOpacity="0.8">
+                    {o.country.toUpperCase()}
+                  </text>
+                  <text x={o.x * 10} y={o.y * 5 + 33} fill="#f0e0c8" fontSize="9" fontFamily="sans-serif" textAnchor="middle" fillOpacity="0.6">
+                    {o.region}
+                  </text>
+                </motion.g>
+              ))}
+
+              <text x="30" y="30" fill="#d4a06b" fillOpacity="0.4" fontSize="12" fontFamily="monospace">N</text>
+              <text x="960" y="485" fill="#d4a06b" fillOpacity="0.4" fontSize="12" fontFamily="monospace" textAnchor="end">S</text>
             </svg>
-
-            {/* Origin dots */}
-            {ORIGINS.map((o, i) => (
-              <motion.div
-                key={o.country}
-                initial={{ opacity: 0, scale: 0 }}
-                whileInView={{ opacity: 1, scale: 1 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.5, delay: 0.5 + i * 0.1 }}
-                className="absolute"
-                style={{ left: `${o.x}%`, top: `${o.y}%`, transform: 'translate(-50%, -50%)' }}
-              >
-                <div className="relative group">
-                  <div className="absolute inset-0 w-6 h-6 bg-copper rounded-full animate-ping opacity-50" />
-                  <div className="relative w-3 h-3 bg-copper rounded-full ring-4 ring-copper/20" />
-                  <div className="absolute top-5 left-1/2 -translate-x-1/2 whitespace-nowrap text-center opacity-80 group-hover:opacity-100 transition-opacity">
-                    <div className="font-mono text-[9px] tracking-[0.2em] text-copper">
-                      {o.country.toUpperCase()}
-                    </div>
-                    <div className="text-[10px] text-parchment/60">{o.region}</div>
-                  </div>
-                </div>
-              </motion.div>
-            ))}
-
-            {/* Decorative axis labels */}
-            <div className="absolute top-3 left-3 font-mono text-[9px] tracking-[0.3em] text-copper/40">
-              N
-            </div>
-            <div className="absolute bottom-3 right-3 font-mono text-[9px] tracking-[0.3em] text-copper/40">
-              S
-            </div>
           </div>
         </Reveal>
 

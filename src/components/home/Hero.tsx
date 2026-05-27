@@ -34,7 +34,7 @@ export function Hero() {
           alt=""
           fill
           priority
-          className="object-cover opacity-30"
+          className="object-cover opacity-60"
         />
         <div className="absolute inset-0 bg-gradient-to-b from-night/60 via-night/85 to-night" />
       </div>
