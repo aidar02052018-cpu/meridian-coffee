@@ -38,16 +38,16 @@ export function FeaturedBeans({ beans }: Props) {
                 href={`/beans/${bean.slug}`}
                 className="block group rounded-2xl overflow-hidden border border-copper/15 hover:border-copper/40 transition-colors bg-night-muted"
               >
-                <div className="relative aspect-[4/5] overflow-hidden">
+                <div className="relative aspect-[3/4] overflow-hidden">
                   {bean.image_url && (
                     <Image
                       src={bean.image_url}
                       alt={bean.name}
                       fill
-                      className="object-cover group-hover:scale-105 transition-transform duration-700"
+                      className="object-cover group-hover:scale-105 transition-transform duration-700 brightness-75"
                     />
                   )}
-                  <div className="absolute inset-0 bg-gradient-to-t from-night via-night/20 to-transparent" />
+                  <div className="absolute inset-0 bg-gradient-to-t from-night via-night/50 to-night/20" />
                   <div className="absolute top-4 left-4 right-4 flex justify-between font-mono text-[10px] tracking-[0.2em] text-parchment/80">
                     <span>{bean.country.toUpperCase()}</span>
                     {bean.latitude !== null && bean.longitude !== null && (
