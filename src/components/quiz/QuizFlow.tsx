@@ -32,47 +32,47 @@ export function QuizFlow({ beans }: Props) {
 
   return (
     <div className="max-w-2xl mx-auto">
-      <StepIndicator current={step} />
+      {/* Progress bar */}
+      <div className="mb-8">
+        <div className="flex justify-between mb-2">
+          {['taste', 'milk', 'context', 'first'].map((s, i) => {
+            const steps: Step[] = ['taste', 'milk', 'context', 'first'];
+            const currentIdx = steps.indexOf(step);
+            return (
+              <div key={s} className={`h-1 flex-1 rounded-full mx-0.5 transition-colors ${i <= currentIdx ? 'bg-copper' : 'bg-copper/20'}`} />
+            );
+          })}
+        </div>
+        <StepIndicator current={step} />
+      </div>
 
       {step === 'taste' && (
-        <Question title="Какой вкус вы любите больше всего?">
-          <Option onClick={() => update('taste', 'sour', 'milk')}>
-            Кислый — фруктовый, цитрусовый, яркий
-          </Option>
-          <Option onClick={() => update('taste', 'sweet', 'milk')}>
-            Сладкий — карамель, шоколад, орехи
-          </Option>
-          <Option onClick={() => update('taste', 'balanced', 'milk')}>
-            Сбалансированный — всё понемногу
-          </Option>
-          <Option onClick={() => update('taste', 'bitter', 'milk')}>
-            Горький — крепкий, плотный, тёмный
-          </Option>
+        <Question title="Какой вкус вы любите больше всего?" subtitle="Это поможет подобрать зерно под ваш профиль">
+          <Option emoji="🍋" onClick={() => update('taste', 'sour', 'milk')}>Кислый — фруктовый, цитрусовый, яркий</Option>
+          <Option emoji="🍫" onClick={() => update('taste', 'sweet', 'milk')}>Сладкий — карамель, шоколад, орехи</Option>
+          <Option emoji="☕" onClick={() => update('taste', 'balanced', 'milk')}>Сбалансированный — всё понемногу</Option>
+          <Option emoji="🔥" onClick={() => update('taste', 'bitter', 'milk')}>Горький — крепкий, плотный, тёмный</Option>
         </Question>
       )}
 
       {step === 'milk' && (
-        <Question title="Будете пить с молоком?">
-          <Option onClick={() => update('withMilk', true, 'context')}>Да, обычно с молоком</Option>
-          <Option onClick={() => update('withMilk', false, 'context')}>Нет, чёрный кофе</Option>
+        <Question title="Будете пить с молоком?" subtitle="От этого зависит рекомендуемая обжарка">
+          <Option emoji="🥛" onClick={() => update('withMilk', true, 'context')}>Да, обычно с молоком или альтернативой</Option>
+          <Option emoji="☕" onClick={() => update('withMilk', false, 'context')}>Нет, чёрный кофе — без ничего</Option>
         </Question>
       )}
 
       {step === 'context' && (
-        <Question title="Где будете пить чаще?">
-          <Option onClick={() => update('context', 'home', 'first')}>Дома — буду варить сам</Option>
-          <Option onClick={() => update('context', 'cafe', 'first')}>В кофейне — пью у вас</Option>
+        <Question title="Где будете пить чаще?" subtitle="Для дома подберём зерно под вашу кофеварку">
+          <Option emoji="🏠" onClick={() => update('context', 'home', 'first')}>Дома — буду варить сам</Option>
+          <Option emoji="🏪" onClick={() => update('context', 'cafe', 'first')}>В кофейне — пью у вас</Option>
         </Question>
       )}
 
       {step === 'first' && (
-        <Question title="Это ваш первый опыт со спешелти-кофе?">
-          <Option onClick={() => update('isFirstTime', true, 'result')}>
-            Да, только начинаю разбираться
-          </Option>
-          <Option onClick={() => update('isFirstTime', false, 'result')}>
-            Нет, я в теме
-          </Option>
+        <Question title="Первый опыт со спешелти?" subtitle="Мы учтём это при рекомендации">
+          <Option emoji="🌱" onClick={() => update('isFirstTime', true, 'result')}>Да, только начинаю разбираться</Option>
+          <Option emoji="🎯" onClick={() => update('isFirstTime', false, 'result')}>Нет, я уже в теме</Option>
         </Question>
       )}
     </div>
@@ -89,22 +89,24 @@ function StepIndicator({ current }: { current: Step }) {
   );
 }
 
-function Question({ title, children }: { title: string; children: React.ReactNode }) {
+function Question({ title, subtitle, children }: { title: string; subtitle?: string; children: React.ReactNode }) {
   return (
     <div>
-      <h2 className="font-serif text-3xl text-copper text-center mb-10">{title}</h2>
+      <h2 className="font-serif text-2xl md:text-3xl text-copper text-center mb-2">{title}</h2>
+      {subtitle && <p className="text-parchment/50 text-sm text-center mb-8">{subtitle}</p>}
       <div className="space-y-3">{children}</div>
     </div>
   );
 }
 
-function Option({ onClick, children }: { onClick: () => void; children: React.ReactNode }) {
+function Option({ emoji, onClick, children }: { emoji: string; onClick: () => void; children: React.ReactNode }) {
   return (
     <button
       onClick={onClick}
-      className="block w-full text-left p-5 border border-copper/25 rounded-lg hover:border-copper hover:bg-copper/5 transition-colors"
+      className="flex items-center gap-4 w-full text-left p-5 border border-copper/25 rounded-xl hover:border-copper hover:bg-copper/5 transition-all hover:translate-x-1"
     >
-      {children}
+      <span className="text-2xl flex-shrink-0">{emoji}</span>
+      <span className="text-parchment/90">{children}</span>
     </button>
   );
 }

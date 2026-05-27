@@ -41,7 +41,7 @@ export function Manifesto() {
             </div>
 
             <div className="mt-12 grid grid-cols-3 gap-6 pt-8 border-t border-copper/15">
-              <Stat number="6" label="стран" />
+              <Stat number="12" label="стран" />
               <Stat number="1 200+" label="м над у. м." />
               <Stat number="100%" label="арабика" />
             </div>
