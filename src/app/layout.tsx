@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
+import { Analytics } from "@vercel/analytics/next";
 import { Header } from "@/components/layout/Header";
 import { Footer } from "@/components/layout/Footer";
 import "./globals.css";
@@ -11,9 +12,25 @@ const inter = Inter({
 });
 
 export const metadata: Metadata = {
-  title: "МЕРИДИАН — спешелти-кофе с координатами",
+  title: {
+    default: "МЕРИДИАН — спешелти-кофе с координатами",
+    template: "%s | МЕРИДИАН",
+  },
   description:
     "Каждое зерно знает откуда оно. Подписка на свежеобжаренное спешелти от обжарочной МЕРИДИАН.",
+  openGraph: {
+    title: "МЕРИДИАН — спешелти-кофе с координатами",
+    description:
+      "Каждое зерно знает откуда оно. Подписка на свежее зерно.",
+    type: "website",
+    locale: "ru_RU",
+    siteName: "МЕРИДИАН",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "МЕРИДИАН — спешелти-кофе с координатами",
+    description: "Каждое зерно знает откуда оно.",
+  },
 };
 
 export default function RootLayout({
@@ -27,6 +44,7 @@ export default function RootLayout({
         <Header />
         <main className="flex-1">{children}</main>
         <Footer />
+        <Analytics />
       </body>
     </html>
   );
