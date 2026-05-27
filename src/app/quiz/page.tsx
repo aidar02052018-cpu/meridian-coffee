@@ -20,7 +20,7 @@ export default async function QuizPage() {
             alt=""
             fill
             priority
-            className="object-cover opacity-20"
+            className="object-cover opacity-40"
           />
           <div className="absolute inset-0 bg-gradient-to-b from-night/70 via-night/90 to-night" />
         </div>

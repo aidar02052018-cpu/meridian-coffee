@@ -1,6 +1,7 @@
 'use client';
 
 import Link from 'next/link';
+import Image from 'next/image';
 import type { Bean } from '@/lib/types';
 
 interface Props {
@@ -25,20 +26,32 @@ export function QuizResult({ beans, onRestart }: Props) {
           <Link
             key={bean.id}
             href={`/beans/${bean.slug}`}
-            className="block bg-night-muted rounded-xl p-8 border border-copper/20 hover:border-copper transition-colors"
+            className="flex flex-col md:flex-row gap-6 bg-night-muted rounded-xl overflow-hidden border border-copper/20 hover:border-copper transition-colors group"
           >
-            <div className="flex justify-between items-baseline mb-4">
-              <p className="font-mono text-[10px] tracking-[0.3em] text-copper/60">
-                {bean.country.toUpperCase()}
-              </p>
-              <p className="text-copper font-medium">{bean.price_250g} ₽ / 250 г</p>
-            </div>
-            <h3 className="font-serif text-3xl text-copper">{bean.name}</h3>
-            <p className="text-parchment/80 mt-3">{bean.tasting_notes.join(' · ')}</p>
-            {bean.description && (
-              <p className="text-parchment/60 text-sm mt-3 italic">{bean.description}</p>
+            {bean.image_url && (
+              <div className="relative w-full md:w-48 aspect-square md:aspect-auto flex-shrink-0 overflow-hidden">
+                <Image
+                  src={bean.image_url}
+                  alt={bean.name}
+                  fill
+                  className="object-cover group-hover:scale-105 transition-transform duration-700"
+                />
+              </div>
             )}
-            <p className="text-copper text-sm mt-4">Открыть карточку →</p>
+            <div className="p-6 md:py-6 md:pr-6 md:pl-0 flex-1">
+              <div className="flex justify-between items-baseline mb-3">
+                <p className="font-mono text-[10px] tracking-[0.3em] text-copper/60">
+                  {bean.country.toUpperCase()}
+                </p>
+                <p className="text-copper font-medium">{bean.price_250g} ₽ / 250 г</p>
+              </div>
+              <h3 className="font-serif text-3xl text-copper">{bean.name}</h3>
+              <p className="text-parchment/80 mt-3">{bean.tasting_notes.join(' · ')}</p>
+              {bean.description && (
+                <p className="text-parchment/60 text-sm mt-3 italic">{bean.description}</p>
+              )}
+              <p className="text-copper text-sm mt-4">Открыть карточку →</p>
+            </div>
           </Link>
         ))}
       </div>

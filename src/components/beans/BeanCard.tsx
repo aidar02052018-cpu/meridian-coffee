@@ -15,7 +15,7 @@ export function BeanCard({ bean }: BeanCardProps) {
   return (
     <Link
       href={`/beans/${bean.slug}`}
-      className="block group rounded-2xl overflow-hidden border border-copper/15 hover:border-copper/40 transition-colors bg-night-muted"
+      className="flex flex-col h-full group rounded-2xl overflow-hidden border border-copper/15 hover:border-copper/40 transition-colors bg-night-muted"
     >
       <div className="relative aspect-[4/5] overflow-hidden">
         {bean.image_url && (
@@ -40,11 +40,11 @@ export function BeanCard({ bean }: BeanCardProps) {
           </p>
         </div>
       </div>
-      <div className="p-5">
+      <div className="p-5 flex-1 flex flex-col">
         <div className="text-sm text-parchment/80 line-clamp-2">
           {bean.tasting_notes.join(' · ')}
         </div>
-        <div className="flex justify-between items-center mt-4 pt-4 border-t border-copper/15">
+        <div className="flex justify-between items-center mt-auto pt-4 border-t border-copper/15">
           <span className="text-copper font-medium text-sm">от {bean.price_250g} ₽</span>
           <span className="font-mono text-[10px] tracking-[0.2em] text-copper/60 group-hover:text-copper transition-colors">
             ОТКРЫТЬ →
