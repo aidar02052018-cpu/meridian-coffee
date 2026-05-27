@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useCallback } from 'react';
 import {
   validateSubscriptionForm,
   type SubscriptionFormData,
@@ -11,6 +11,7 @@ interface Props {
 }
 
 type Status = 'idle' | 'submitting' | 'success' | 'error';
+type FieldKey = 'name' | 'phone' | 'email' | 'address';
 
 export function SubscriptionForm({ selectedTier }: Props) {
   const [form, setForm] = useState<SubscriptionFormData>({
@@ -22,17 +23,35 @@ export function SubscriptionForm({ selectedTier }: Props) {
     notes: '',
   });
   const [errors, setErrors] = useState<Partial<Record<keyof SubscriptionFormData, string>>>({});
+  const [touched, setTouched] = useState<Set<FieldKey>>(new Set());
   const [status, setStatus] = useState<Status>('idle');
 
-  const update = <K extends keyof SubscriptionFormData>(
-    key: K,
-    value: SubscriptionFormData[K]
-  ) => {
+  const update = <K extends keyof SubscriptionFormData>(key: K, value: SubscriptionFormData[K]) => {
     setForm((prev) => ({ ...prev, [key]: value }));
+    if (touched.has(key as FieldKey)) {
+      const updated = { ...form, [key]: value, tier: selectedTier };
+      const result = validateSubscriptionForm(updated);
+      if (!result.ok && result.errors[key]) {
+        setErrors((prev) => ({ ...prev, [key]: result.errors[key] }));
+      } else {
+        setErrors((prev) => { const next = { ...prev }; delete next[key]; return next; });
+      }
+    }
   };
+
+  const handleBlur = useCallback((field: FieldKey) => {
+    setTouched((prev) => new Set(prev).add(field));
+    const result = validateSubscriptionForm({ ...form, tier: selectedTier });
+    if (!result.ok && result.errors[field]) {
+      setErrors((prev) => ({ ...prev, [field]: result.errors[field] }));
+    } else {
+      setErrors((prev) => { const next = { ...prev }; delete next[field]; return next; });
+    }
+  }, [form, selectedTier]);
 
   const submit = async (e: React.FormEvent) => {
     e.preventDefault();
+    setTouched(new Set(['name', 'phone', 'email', 'address']));
     const payload = { ...form, tier: selectedTier };
     const validation = validateSubscriptionForm(payload);
     if (!validation.ok) {
@@ -60,28 +79,24 @@ export function SubscriptionForm({ selectedTier }: Props) {
   if (status === 'success') {
     return (
       <div className="bg-night-muted rounded-xl p-10 text-center border border-copper/30">
-        <p className="font-mono text-xs tracking-[0.4em] text-copper/60 mb-3">
-          ЗАЯВКА ПРИНЯТА
-        </p>
+        <p className="font-mono text-xs tracking-[0.4em] text-copper/60 mb-3">ЗАЯВКА ПРИНЯТА</p>
         <h3 className="font-serif text-3xl text-copper">Спасибо!</h3>
         <p className="text-parchment/80 mt-4 max-w-md mx-auto">
-          Мы получили вашу заявку и свяжемся с вами в течение рабочего дня. Письмо с подтверждением уже на пути.
+          Мы получили вашу заявку и свяжемся с вами в течение рабочего дня.
         </p>
       </div>
     );
   }
 
   return (
-    <form
-      onSubmit={submit}
-      className="space-y-5 bg-night-muted rounded-xl p-8 border border-copper/15"
-    >
+    <form onSubmit={submit} className="space-y-5 bg-night-muted rounded-xl p-8 border border-copper/15">
       <Field label="Как к вам обращаться" error={errors.name}>
         <input
           type="text"
           value={form.name}
           onChange={(e) => update('name', e.target.value)}
-          className="form-input"
+          onBlur={() => handleBlur('name')}
+          className={`form-input ${errors.name ? 'form-input-error' : ''}`}
           placeholder="Иван Петров"
         />
       </Field>
@@ -92,7 +107,8 @@ export function SubscriptionForm({ selectedTier }: Props) {
             type="tel"
             value={form.phone}
             onChange={(e) => update('phone', e.target.value)}
-            className="form-input"
+            onBlur={() => handleBlur('phone')}
+            className={`form-input ${errors.phone ? 'form-input-error' : ''}`}
             placeholder="+7 999 123 45 67"
           />
         </Field>
@@ -101,7 +117,8 @@ export function SubscriptionForm({ selectedTier }: Props) {
             type="email"
             value={form.email}
             onChange={(e) => update('email', e.target.value)}
-            className="form-input"
+            onBlur={() => handleBlur('email')}
+            className={`form-input ${errors.email ? 'form-input-error' : ''}`}
             placeholder="ivan@example.com"
           />
         </Field>
@@ -112,7 +129,8 @@ export function SubscriptionForm({ selectedTier }: Props) {
           type="text"
           value={form.address}
           onChange={(e) => update('address', e.target.value)}
-          className="form-input"
+          onBlur={() => handleBlur('address')}
+          className={`form-input ${errors.address ? 'form-input-error' : ''}`}
           placeholder="Москва, улица, дом, квартира"
         />
       </Field>
@@ -136,7 +154,7 @@ export function SubscriptionForm({ selectedTier }: Props) {
 
       {status === 'error' && Object.keys(errors).length === 0 && (
         <p className="text-sm text-red-400 text-center">
-          Что-то пошло не так. Попробуйте ещё раз или свяжитесь с нами напрямую.
+          Что-то пошло не так. Попробуйте ещё раз.
         </p>
       )}
 
@@ -150,32 +168,33 @@ export function SubscriptionForm({ selectedTier }: Props) {
           color: #f0e0c8;
           font-family: inherit;
           font-size: 14px;
+          transition: border-color 0.2s;
         }
         :global(.form-input:focus) {
           outline: none;
           border-color: #d4a06b;
+        }
+        :global(.form-input-error) {
+          border-color: #e87a7a !important;
+          background: rgba(232, 122, 122, 0.05);
         }
       `}</style>
     </form>
   );
 }
 
-function Field({
-  label,
-  error,
-  children,
-}: {
-  label: string;
-  error?: string;
-  children: React.ReactNode;
-}) {
+function Field({ label, error, children }: { label: string; error?: string; children: React.ReactNode }) {
   return (
     <label className="block">
-      <div className="font-mono text-[10px] tracking-[0.3em] text-copper/60 mb-2">
+      <div className={`font-mono text-[10px] tracking-[0.3em] mb-2 ${error ? 'text-red-400' : 'text-copper/60'}`}>
         {label.toUpperCase()}
       </div>
       {children}
-      {error && <div className="text-xs text-red-400 mt-1">{error}</div>}
+      {error && (
+        <div className="text-xs text-red-400 mt-1.5 flex items-center gap-1">
+          <span>⚠</span> {error}
+        </div>
+      )}
     </label>
   );
 }

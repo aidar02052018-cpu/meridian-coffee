@@ -32,7 +32,7 @@ const QUESTIONS = [
 ];
 
 export function FAQ() {
-  const [open, setOpen] = useState<number | null>(0);
+  const [open, setOpen] = useState<number | null>(null);
 
   return (
     <section className="py-32 border-b border-copper/15">
