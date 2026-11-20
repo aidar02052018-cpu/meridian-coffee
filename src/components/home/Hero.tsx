@@ -53,7 +53,7 @@ export function Hero() {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 0.15 }}
-          className="font-serif text-6xl md:text-8xl text-copper leading-[1.02]"
+          className="font-serif text-[clamp(2.25rem,10.5vw,3.75rem)] md:text-8xl text-copper leading-[1.02]"
         >
           Кофе<br />с координатами
         </motion.h1>

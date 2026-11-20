@@ -84,6 +84,9 @@ export function SubscriptionForm({ selectedTier }: Props) {
         <p className="text-parchment/80 mt-4 max-w-md mx-auto">
           Мы получили вашу заявку и свяжемся с вами в течение рабочего дня.
         </p>
+        <p className="text-xs text-parchment/50 mt-6 max-w-md mx-auto">
+          Это демо-проект: заявка никуда не отправляется, данные не сохраняются.
+        </p>
       </div>
     );
   }
@@ -151,6 +154,10 @@ export function SubscriptionForm({ selectedTier }: Props) {
       >
         {status === 'submitting' ? 'Отправляем…' : 'Оформить подписку'}
       </button>
+
+      <p className="text-xs text-parchment/50 text-center">
+        Демо-проект: заявка не отправляется и не сохраняется.
+      </p>
 
       {status === 'error' && Object.keys(errors).length === 0 && (
         <p className="text-sm text-red-400 text-center">

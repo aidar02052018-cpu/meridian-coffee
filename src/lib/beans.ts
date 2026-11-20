@@ -1,26 +1,13 @@
-import { supabase } from './supabase';
+import { BEANS } from '@/data/beans';
 import type { Bean } from './types';
 
+// Данные лежат в самом сайте (src/data/beans.ts), поэтому функции работают без сети.
+// Сигнатуры остались асинхронными, чтобы страницы не пришлось переписывать.
+
 export async function getAllBeans(): Promise<Bean[]> {
-  const { data, error } = await supabase
-    .from('beans')
-    .select('*')
-    .eq('is_active', true)
-    .order('name');
-  if (error) throw error;
-  return data ?? [];
+  return BEANS.filter((b) => b.is_active).sort((a, b) => a.name.localeCompare(b.name));
 }
 
 export async function getBeanBySlug(slug: string): Promise<Bean | null> {
-  const { data, error } = await supabase
-    .from('beans')
-    .select('*')
-    .eq('slug', slug)
-    .eq('is_active', true)
-    .single();
-  if (error) {
-    if (error.code === 'PGRST116') return null;
-    throw error;
-  }
-  return data;
+  return BEANS.find((b) => b.slug === slug && b.is_active) ?? null;
 }

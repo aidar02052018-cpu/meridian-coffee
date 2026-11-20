@@ -2,11 +2,18 @@ import { notFound } from 'next/navigation';
 import Link from 'next/link';
 import Image from 'next/image';
 import { getBeanBySlug, getAllBeans } from '@/lib/beans';
+import { formatCoords } from '@/lib/coords';
 import { BeanCard } from '@/components/beans/BeanCard';
 import { Reveal } from '@/components/ui/Reveal';
 
 interface PageProps {
   params: Promise<{ slug: string }>;
+}
+
+// Все 30 страниц зёрен собираются заранее, при сборке сайта
+export async function generateStaticParams() {
+  const beans = await getAllBeans();
+  return beans.map((b) => ({ slug: b.slug }));
 }
 
 export async function generateMetadata({ params }: PageProps) {
@@ -44,10 +51,7 @@ export default async function BeanPage({ params }: PageProps) {
   const allBeans = await getAllBeans();
   const related = allBeans.filter((b) => b.slug !== bean.slug).slice(0, 3);
 
-  const coords =
-    bean.latitude !== null && bean.longitude !== null
-      ? `${bean.latitude.toFixed(2)}° N · ${bean.longitude.toFixed(2)}° E`
-      : null;
+  const coords = formatCoords(bean.latitude, bean.longitude);
 
   return (
     <article>

@@ -15,7 +15,7 @@ export default async function QuizPage() {
     <section className="relative">
       <div className="absolute inset-0 -z-10">
         <Image
-          src="https://images.unsplash.com/photo-1447933601403-56dc2df9e4e7?w=2000&q=80"
+          src="https://images.unsplash.com/photo-1509042239860-f550ce710b93?w=2000&q=80"
           alt=""
           fill
           priority
